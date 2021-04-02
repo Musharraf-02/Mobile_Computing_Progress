@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     DBHelper dbHelper;
     ArrayList<CustomerModel> customers;
     ArrayAdapter<CustomerModel> arrayAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,18 +37,27 @@ public class MainActivity extends AppCompatActivity {
         refreshRecords();
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             CustomerModel customerModel;
+
             @Override
             public void onClick(View v) {
-                try {
+                if (editAge.getText().toString().isEmpty()  || editName.getText().toString().isEmpty())
+                {
+                    Toast.makeText(MainActivity.this, "Please enter name and age.", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
                     customerModel = new CustomerModel(editName.getText().toString(), Integer.parseInt(editAge.getText().toString()), switchIsActive.isChecked(), 1);
-                    Toast.makeText(MainActivity.this, "Customer added successfully.", Toast.LENGTH_SHORT).show();
+                    dbHelper = new DBHelper(MainActivity.this);
+                    boolean b = dbHelper.addCustomer(customerModel);
+                    if (b) {
+                        Toast.makeText(MainActivity.this, "Customer added successfully.", Toast.LENGTH_SHORT).show();
+                        refreshRecords();
+                    } else {
+                        Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                    }
                 }
-                catch (Exception e){
-                    Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
-                }
-                dbHelper = new DBHelper(MainActivity.this);
-                boolean b = dbHelper.addCustomer(customerModel);
-                refreshRecords();
+                editAge.setText("");
+                editName.setText("");
             }
         });
         buttonViewAll.setOnClickListener(new View.OnClickListener() {
@@ -60,27 +70,24 @@ public class MainActivity extends AppCompatActivity {
         listViewCustomer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String[] parsedCustomer=customers.get(position).toString().split(",");
-                String[] Id=parsedCustomer[0].split(":");
-                dbHelper=new DBHelper(MainActivity.this);
-                boolean b =dbHelper.deleteCustomer(Id[1]);
-                if(b)
-                {
+                String[] parsedCustomer = customers.get(position).toString().split(",");
+                String[] Id = parsedCustomer[0].split(":");
+                dbHelper = new DBHelper(MainActivity.this);
+                boolean b = dbHelper.deleteCustomer(Id[1]);
+                if (b) {
                     Toast.makeText(MainActivity.this, "Customer removed successfully.", Toast.LENGTH_SHORT).show();
                     refreshRecords();
-                }
-                else
-                {
+                } else {
                     Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
-    private void refreshRecords()
-    {
-        dbHelper=new DBHelper(MainActivity.this);
-        customers=dbHelper.getCustomersList();
-        arrayAdapter=new ArrayAdapter<CustomerModel>(MainActivity.this, android.R.layout.simple_list_item_1,customers);
+
+    private void refreshRecords() {
+        dbHelper = new DBHelper(MainActivity.this);
+        customers = dbHelper.getCustomersList();
+        arrayAdapter = new ArrayAdapter<CustomerModel>(MainActivity.this, android.R.layout.simple_list_item_1, customers);
         listViewCustomer.setAdapter(arrayAdapter);
     }
 }
