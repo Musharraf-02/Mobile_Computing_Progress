@@ -18,13 +18,15 @@
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
             app:navigationIcon="@drawable/ic_baseline_menu_24"
-            app:title="Navbar" />
+            app:subtitleTextColor="#FFFFFF"
+            app:title="Navbar"
+            app:titleTextColor="#FFFFFF" />
     </RelativeLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/header"
         app:menu="@menu/menu"
