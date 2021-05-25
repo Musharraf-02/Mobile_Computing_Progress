@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/showMsg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#AD1457"
+    android:orientation="vertical"
+    tools:context=".FragmentTwo">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#00FFFFFF"
+        android:shadowColor="#FFFFFF"
+        android:text="This is fragment two."
+        android:textColor="#FFFFFF"
+        android:textSize="36sp" />
+
+    <Button
+        android:id="@+id/showToast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Toast" />
+</LinearLayout>
